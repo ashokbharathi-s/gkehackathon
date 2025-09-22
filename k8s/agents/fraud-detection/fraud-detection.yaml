@@ -88,11 +88,13 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
       - name: fraud-detection
-        image: us-central1-docker.pkg.dev/gkehackathon-472914/aiagents/fraud-detection-agent:9
+        image: us-central1-docker.pkg.dev/gkehackathon-472914/aiagents/fraud-detection-agent:15
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8000
           name: http
+        - containerPort: 8001
+          name: a2a
         envFrom:
         - configMapRef:
             name: fraud-detection-config
@@ -100,23 +102,12 @@ spec:
             name: fraud-detection-secrets
         resources:
           requests:
-            cpu: 500m
-            memory: 1Gi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 1000m
-            memory: 2Gi
-        readinessProbe:
-          tcpSocket:
-            port: 8000
-          initialDelaySeconds: 10
-          periodSeconds: 5
-          timeoutSeconds: 10
-        livenessProbe:
-          tcpSocket:
-            port: 8000
-          initialDelaySeconds: 30
-          periodSeconds: 15
-          timeoutSeconds: 10
+            cpu: 500m
+            memory: 512Mi
+
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:

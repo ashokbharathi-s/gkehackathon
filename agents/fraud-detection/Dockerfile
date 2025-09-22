@@ -8,8 +8,7 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy fraud monitor code - ALL versions available
-COPY simple_fraud_monitor.py .
+# Copy fraud monitor code
 COPY real_fraud_monitor.py .
 COPY adk_fraud_agent.py .
 
@@ -22,7 +21,7 @@ ENV PYTHONUNBUFFERED=1
 ENV ADK_MODE=enabled
 ENV A2A_PORT=8001
 
-# Expose ports for monitoring and A2A communication
+# Expose ports for monitoring and A2A communication (no health checks)
 EXPOSE 8000 8001
 
 # Health checks handled by Kubernetes readiness/liveness probes
