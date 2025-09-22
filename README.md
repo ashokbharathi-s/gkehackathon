@@ -4,7 +4,21 @@
 
 ## 🏆 Overview
 
-This project enhances Bank of Anthos with an **AI-powered Fraud Detection Agent** that provides real-time transaction monitoring, intelligent risk assessment, and automated fraud alerts using Google's latest AI technologies.
+This project enhances Bank of Anthos with an **AI-powered Fraud Detection Agent** that provides real-time transaction monitoring, intellige## 📚 Documentation & Deployment
+
+### 🚀 **Ready to Deploy?**
+
+**👉 Start here: [`DEPLOYMENT-GUIDE.md`](./DEPLOYMENT-GUIDE.md)**
+
+The deployment guide contains:
+- **⚡ Quick Deploy**: Essential commands for experienced users (5 minutes)
+- **📋 Step-by-Step**: Complete instructions for first-time deployment
+- **✅ Verification**: Built-in validation with `verify-demo.sh` script
+- **🔧 Troubleshooting**: Common issues and solutions
+
+### 📖 Additional Documentation
+- **`DEMO-SCRIPT.md`** - Hackathon presentation script and demo walkthrough
+- **`verify-demo.sh`** - Automated deployment verification scriptk assessment, and automated fraud alerts using Google's latest AI technologies.
 
 ### 🎯 Hackathon Challenge
 Built for the **GKE Turns 10 Hackathon**, this solution demonstrates:
@@ -16,35 +30,14 @@ Built for the **GKE Turns 10 Hackathon**, this solution demonstrates:
 
 ## 🚀 Quick Start
 
-### Prerequisites
-- Google Cloud Platform account with billing enabled
-- `gcloud`, `kubectl`, `docker` CLI tools installed
-- GKE, Vertex AI, Container Registry APIs enabled
+**➡️ For complete deployment instructions, see [`DEPLOYMENT-GUIDE.md`](./DEPLOYMENT-GUIDE.md)**
 
-### Deploy in 5 Minutes
-```bash
-# 1. Set environment variables
-export PROJECT_ID="your-project-id"
-export REGION="us-central1"
-
-# 2. Create GKE cluster
-gcloud container clusters create gke-hackathon-cluster \
-    --project=$PROJECT_ID --zone=${REGION}-a \
-    --machine-type=e2-standard-4 --num-nodes=3
-
-# 3. Deploy Bank of Anthos
-git clone https://github.com/GoogleCloudPlatform/bank-of-anthos.git
-cd bank-of-anthos && kubectl apply -f kubernetes-manifests/
-
-# 4. Deploy AI Fraud Detection Agent
-git clone https://github.com/ashokbharathi-s/gkehackathon.git
-cd gkehackathon && ./verify-demo.sh
-
-# 5. Monitor fraud detection
-kubectl logs -f deployment/fraud-detection-agent
-```
-
-**📖 For detailed instructions, see `DEPLOYMENT-GUIDE.md`**
+The deployment guide includes:
+- **Quick deployment** commands for experienced users (5 minutes)
+- **Step-by-step instructions** for first-time users
+- **Prerequisites and setup** requirements
+- **Troubleshooting guide** and verification steps
+- **Production considerations** and scaling options
 
 ## 🚀 Key Features
 
@@ -165,45 +158,9 @@ The agent actively monitors **645+ real user accounts** in the Bank of Anthos da
 - **Alert Accuracy**: Detailed risk scoring with explanations
 - **System Availability**: 99.9% uptime with auto-scaling
 
-## 🛠️ Deployment Guide
+## 🛠️ Deployment & Configuration
 
-### Prerequisites
-- Google Cloud Project with GKE enabled
-- `kubectl` configured for your cluster
-- Docker/Podman for building images
-- Bank of Anthos deployed in the cluster
-
-### Quick Start
-
-1. **Clone and Setup**
-```bash
-git clone <your-repo>
-cd gke-hackathon-ai-banking
-```
-
-2. **Configure Environment**
-```bash
-# Set your project details
-export PROJECT_ID=your-project-id
-export REGION=us-central1
-```
-
-3. **Deploy JWT Secret**
-```bash
-kubectl create secret generic jwt-key \
-  --from-file=jwtRS256.key=./path/to/your/jwt-private-key
-```
-
-4. **Deploy the Agent**
-```bash
-kubectl apply -f k8s/agents/fraud-detection/
-```
-
-5. **Verify Deployment**
-```bash
-kubectl get pods -l app=fraud-detection-agent
-kubectl logs -l app=fraud-detection-agent --tail=50
-```
+**➡️ Complete deployment instructions are in [`DEPLOYMENT-GUIDE.md`](./DEPLOYMENT-GUIDE.md)**
 
 ### Configuration Options
 
