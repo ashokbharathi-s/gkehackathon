@@ -1,0 +1,215 @@
+# Fraud Detection Agent - Complete Kubernetes Manifest
+# This file contains all resources needed for the fraud detection service:
+# - ConfigMap (non-sensitive configuration)
+# - Secret (API keys and sensitive data)  
+# - Deployment (main application)
+# - Service (internal networking)
+# - HorizontalPodAutoscaler (auto-scaling)
+# - PodDisruptionBudget (high availability)
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fraud-detection-config
+  labels:
+    app: fraud-detection-agent
+    application: bank-of-anthos-ai
+    environment: development
+    team: ai-agents
+data:
+  # Google Cloud Configuration
+  GOOGLE_CLOUD_PROJECT: "gkehackathon-472914"
+  GOOGLE_CLOUD_REGION: "us-central1"
+  
+  # Bank of Anthos API Configuration
+  BANK_API_BASE_URL: "http://frontend:80"
+  BANK_API_TIMEOUT: "30"
+  
+  # Agent Configuration
+  AGENT_NAME: "fraud-detection-agent"
+  AGENT_VERSION: "1.0.0"
+  LOG_LEVEL: "INFO"
+  
+  # Fraud Detection Configuration
+  FRAUD_THRESHOLD: "0.7"
+  MAX_TRANSACTION_AMOUNT: "10000"
+  SUSPICIOUS_VELOCITY_THRESHOLD: "5"
+  
+  # ADK Configuration
+  ADK_PORT: "8000"
+  ADK_HOST: "0.0.0.0"
+
+---
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: fraud-detection-secrets
+# 
+#   labels:
+#     app: fraud-detection-agent
+#     application: bank-of-anthos-ai
+#     environment: development
+#     team: ai-agents
+# type: Opaque
+# data:
+#   # Base64 encoded Google API key
+#   # To create: echo -n "your_actual_api_key_here" | base64
+#   # Replace the value below with your actual base64-encoded API key
+#   GOOGLE_API_KEY: eW91cl9hY3R1YWxfYXBpX2tleV9oZXJl  # "your_actual_api_key_here" in base64
+
+# ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fraud-detection-agent
+  labels:
+    app: fraud-detection-agent
+    version: v1
+    application: bank-of-anthos-ai
+    environment: development
+    team: ai-agents
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: fraud-detection-agent
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: fraud-detection-agent
+        version: v1
+        application: bank-of-anthos-ai
+        environment: development
+        team: ai-agents
+    spec:
+      serviceAccountName: bank-of-anthos
+      terminationGracePeriodSeconds: 5
+      containers:
+      - name: fraud-detection
+        image: us-central1-docker.pkg.dev/gkehackathon-472914/aiagents/fraud-detection-agent:9
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8000
+          name: http
+        envFrom:
+        - configMapRef:
+            name: fraud-detection-config
+        - secretRef:
+            name: fraud-detection-secrets
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1Gi
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+        readinessProbe:
+          tcpSocket:
+            port: 8000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 15
+          timeoutSeconds: 10
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - all
+          readOnlyRootFilesystem: false
+          runAsNonRoot: true
+        volumeMounts:
+        - name: jwt-key
+          mountPath: /var/secrets/jwt
+          readOnly: true
+      volumes:
+      - name: jwt-key
+        secret:
+          secretName: jwt-key
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fraud-detection-agent
+  labels:
+    app: fraud-detection-agent
+    application: bank-of-anthos-ai
+    environment: development
+    team: ai-agents
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8000
+    protocol: TCP
+  selector:
+    app: fraud-detection-agent
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: fraud-detection-agent-hpa
+  labels:
+    app: fraud-detection-agent
+    application: bank-of-anthos-ai
+    environment: development
+    team: ai-agents
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: fraud-detection-agent
+  minReplicas: 2
+  maxReplicas: 5
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 60
+      policies:
+      - type: Percent
+        value: 100
+        periodSeconds: 15
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Percent
+        value: 10
+        periodSeconds: 60
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: fraud-detection-agent-pdb
+  labels:
+    app: fraud-detection-agent
+    application: bank-of-anthos-ai
+    environment: development
+    team: ai-agents
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: fraud-detection-agent
+      version: v1

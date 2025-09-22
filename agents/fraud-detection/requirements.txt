@@ -1,0 +1,22 @@
+# Dependencies for ADK-compliant fraud detection with Bank of Anthos integration
+httpx>=0.24.0
+PyJWT>=2.8.0
+cryptography>=3.4.0
+
+# Google AI - API Key approach (current working method)
+google-generativeai>=0.3.0
+
+# Google AI - Vertex AI approach (production ready)
+google-cloud-aiplatform>=1.40.0
+vertexai>=0.1.0
+
+# Google ADK Framework (when available)
+# google-adk>=1.0.0  # Uncomment when ADK is released
+
+# A2A Protocol support
+aiohttp>=3.8.0
+fastapi>=0.100.0
+uvicorn>=0.20.0
+
+# Additional utilities
+pydantic>=2.0.0
