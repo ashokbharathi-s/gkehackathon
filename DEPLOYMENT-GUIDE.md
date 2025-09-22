@@ -44,11 +44,11 @@ sed -i "s/us-central1/${REGION}/g" fraud-detection.yaml
 kubectl apply -f fraud-detection.yaml
 
 # 7. Verify deployment
-cd ../../ && ./verify-demo.sh
+kubectl get pods -l app=fraud-detection-agent
 kubectl logs -f deployment/fraud-detection-agent
 ```
 
-**✅ The `verify-demo.sh` script will automatically validate your deployment and show system status.**
+**✅ Check that pods are running and logs show successful AI analysis.**
 
 ---
 
@@ -451,8 +451,8 @@ kubectl rollout undo deployment/fraud-detection-agent
 ## 📞 Support and Resources
 
 ### Documentation
-- **Architecture**: `ARCHITECTURE-COMPLETE.md`
-- **Demo Script**: `DEMO-SCRIPT.md`  
+- **Project Overview**: `README.md`
+- **Architecture Diagrams**: `docs/diagrams/`  
 - **API References**: `agents/fraud-detection/README.md`
 
 ### Helpful Commands Reference

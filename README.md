@@ -13,12 +13,8 @@ This project enhances Bank of Anthos with an **AI-powered Fraud Detection Agent*
 The deployment guide contains:
 - **⚡ Quick Deploy**: Essential commands for experienced users (5 minutes)
 - **📋 Step-by-Step**: Complete instructions for first-time deployment
-- **✅ Verification**: Built-in validation with `verify-demo.sh` script
+- **✅ Verification**: Built-in validation and verification steps
 - **🔧 Troubleshooting**: Common issues and solutions
-
-### 📖 Additional Documentation
-- **`DEMO-SCRIPT.md`** - Hackathon presentation script and demo walkthrough
-- **`verify-demo.sh`** - Automated deployment verification scriptk assessment, and automated fraud alerts using Google's latest AI technologies.
 
 ### 🎯 Hackathon Challenge
 Built for the **GKE Turns 10 Hackathon**, this solution demonstrates:
@@ -191,15 +187,12 @@ env:
 
 ## 🎬 Demo Script
 
-*See [DEMO-SCRIPT.md](./DEMO-SCRIPT.md) for the complete 2-3 minute demo walkthrough.*
-
 ## 📁 Project Structure
 
 ```
 gkehackathon/
 ├── README.md                           # Comprehensive project documentation
-├── DEMO-SCRIPT.md                      # Demo presentation script (2-3 minutes)
-├── verify-demo.sh                      # Quick verification script
+├── DEPLOYMENT-GUIDE.md                 # Complete deployment instructions
 ├── .github/
 │   └── copilot-instructions.md         # Project context for development
 ├── agents/
@@ -259,8 +252,6 @@ gkehackathon/
 
 ### 🚀 Getting Started
 - **`DEPLOYMENT-GUIDE.md`** - Complete deployment instructions with quick start commands
-- **`verify-demo.sh`** - Automated verification script to validate deployment
-- **`DEMO-SCRIPT.md`** - Hackathon presentation script and demo walkthrough
 
 ### 📊 Architecture Diagrams
 Visual architecture diagrams are available in `docs/diagrams/`:
