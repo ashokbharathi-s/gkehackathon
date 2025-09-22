@@ -14,6 +14,38 @@ Built for the **GKE Turns 10 Hackathon**, this solution demonstrates:
 - **Cloud-native architecture** on Google Kubernetes Engine
 - **Gemini AI integration** for intelligent transaction analysis
 
+## 🚀 Quick Start
+
+### Prerequisites
+- Google Cloud Platform account with billing enabled
+- `gcloud`, `kubectl`, `docker` CLI tools installed
+- GKE, Vertex AI, Container Registry APIs enabled
+
+### Deploy in 5 Minutes
+```bash
+# 1. Set environment variables
+export PROJECT_ID="your-project-id"
+export REGION="us-central1"
+
+# 2. Create GKE cluster
+gcloud container clusters create gke-hackathon-cluster \
+    --project=$PROJECT_ID --zone=${REGION}-a \
+    --machine-type=e2-standard-4 --num-nodes=3
+
+# 3. Deploy Bank of Anthos
+git clone https://github.com/GoogleCloudPlatform/bank-of-anthos.git
+cd bank-of-anthos && kubectl apply -f kubernetes-manifests/
+
+# 4. Deploy AI Fraud Detection Agent
+git clone https://github.com/ashokbharathi-s/gkehackathon.git
+cd gkehackathon && ./verify-demo.sh
+
+# 5. Monitor fraud detection
+kubectl logs -f deployment/fraud-detection-agent
+```
+
+**📖 For detailed instructions, see `DEPLOYMENT-GUIDE.md`**
+
 ## 🚀 Key Features
 
 ### 🛡️ Real-Time Fraud Detection
@@ -266,7 +298,25 @@ gkehackathon/
 
 **Latest Activity**: Detecting and analyzing fraud patterns in real-time with comprehensive AI-generated reports including risk assessment, indicators, and recommended actions.
 
-## 🚀 Innovation Highlights
+## � Documentation & Deployment
+
+### 🚀 Getting Started
+- **`DEPLOYMENT-GUIDE.md`** - Complete deployment instructions with quick start commands
+- **`verify-demo.sh`** - Automated verification script to validate deployment
+- **`DEMO-SCRIPT.md`** - Hackathon presentation script and demo walkthrough
+
+### 📊 Architecture Diagrams
+Visual architecture diagrams are available in `docs/diagrams/`:
+- **`main-architecture.png`** - Complete system overview
+- **`data-flow.png`** - Real-time transaction processing flow  
+- **`technology-stack.png`** - Technology stack visualization
+
+### 🛠️ Development Files
+- **`agents/fraud-detection/`** - Source code and container files
+- **`k8s/agents/fraud-detection/`** - Kubernetes deployment manifests
+- **`generate-diagrams.py`** - Script to regenerate architecture diagrams
+
+## �🚀 Innovation Highlights
 
 1. **Real Banking Data**: Works with actual Bank of Anthos transactions, not mock data
 2. **Intelligent Analysis**: Uses Gemini AI to provide human-like fraud reasoning
